@@ -16,7 +16,8 @@
   <div class="hero-content">
     <h2>Hello, I'm John Doe</h2>
     <p>Software Engineer passionate about creating innovative solutions</p>
-    <a href="#projects" class="btn">View My Work</a>
+    <button kendoButton themeColor="primary" fillMode="solid" rounded="full" size="large" class="hero-button"
+      (click)="scrollToSection('projects')">View My Work</button>
   </div>
 </section>
 
@@ -48,17 +49,20 @@
       <div class="project-card">
         <h3>Project 1</h3>
         <p>A web application built with Angular and Node.js.</p>
-        <a href="#" class="btn">View Project</a>
+        <button kendoButton themeColor="secondary" fillMode="outline" rounded="medium" class="project-button">View
+          Project</button>
       </div>
       <div class="project-card">
         <h3>Project 2</h3>
         <p>A data analysis tool using Python and Angular.</p>
-        <a href="#" class="btn">View Project</a>
+        <button kendoButton themeColor="secondary" fillMode="outline" rounded="medium" class="project-button">View
+          Project</button>
       </div>
       <div class="project-card">
         <h3>Project 3</h3>
         <p>A mobile app developed with Ionic and Angular.</p>
-        <a href="#" class="btn">View Project</a>
+        <button kendoButton themeColor="secondary" fillMode="outline" rounded="medium" class="project-button">View
+          Project</button>
       </div>
     </div>
   </div>
@@ -67,13 +71,16 @@
 <section id="contact" class="contact">
   <div class="container">
     <h2>Contact Me</h2>
-    <p>Feel free to reach out for collaborations or opportunities.</p>
-    <form class="contact-form" #contactForm>
-      <input type="text" placeholder="Your Name" required />
-      <input type="email" placeholder="Your Email" required />
-      <textarea placeholder="Your Message" required></textarea>
-      <button type="submit" class="btn">Send Message</button>
-    </form>
+    <div class="contact-content">
+      <p>Feel free to reach out for collaborations or opportunities.</p>
+      <form class="contact-form" #contactForm>
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Your Email" required />
+        <textarea placeholder="Your Message" required></textarea>
+        <button kendoButton type="submit" themeColor="primary" fillMode="solid" rounded="full" size="medium"
+          class="contact-button">Send Message</button>
+      </form>
+    </div>
   </div>
 </section>
 

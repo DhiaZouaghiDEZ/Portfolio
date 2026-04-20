@@ -1,3 +1,5 @@
+@import '@progress/kendo-theme-default/dist/all.css';
+
 /* Global styles for Portfolio */
 
 /* Reset and base styles */
@@ -155,23 +157,34 @@ h2 {
     color: white;
 }
 
-.contact-form {
+.contact-content {
     max-width: 600px;
     margin: 0 auto;
+}
+
+.contact-form {
     display: flex;
     flex-direction: column;
 }
 
-.contact-form input,
+.contact-form input {
+    margin-bottom: 1rem;
+    padding: 0.6rem;
+    border: none;
+    border-radius: 5px;
+}
+
 .contact-form textarea {
     margin-bottom: 1rem;
     padding: 0.8rem;
     border: none;
     border-radius: 5px;
+    min-height: 120px;
+    resize: vertical;
 }
 
 .contact-form button {
-    align-self: flex-start;
+    align-self: center;
 }
 
 /* Footer */

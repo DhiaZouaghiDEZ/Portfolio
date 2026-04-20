@@ -1,9 +1,10 @@
 import { Component, signal, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ButtonComponent } from '@progress/kendo-angular-buttons';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, ButtonComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
@@ -33,6 +34,13 @@ export class App implements AfterViewInit {
         alert('Thank you for your message! I will get back to you soon.');
         this.contactForm.nativeElement.reset();
       });
+    }
+  }
+
+  scrollToSection(sectionId: string) {
+    const target = document.querySelector(`#${sectionId}`);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
     }
   }
 }
