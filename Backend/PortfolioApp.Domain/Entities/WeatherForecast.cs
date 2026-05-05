@@ -1,7 +1,9 @@
-namespace PortfolioApp.API;
+namespace PortfolioApp.Domain.Entities;
 
 public class WeatherForecast
 {
+    public int Id { get; set; }
+
     public DateOnly Date { get; set; }
 
     public int TemperatureC { get; set; }

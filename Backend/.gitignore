@@ -429,3 +429,45 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Entity Framework Core
+**/Migrations/*
+!**/Migrations/.gitkeep
+
+# Local settings and secrets
+appsettings.Local.json
+*.user
+secrets.json
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# IDE specific
+.idea/
+*.swp
+*.swo
+*~
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OSX
+.DS_Store
+
+# Rider
+.idea/
+*.sln.iml
+
+# macOS
+**/.AppleDouble
+**/.LSOverride
