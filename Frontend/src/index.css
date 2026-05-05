@@ -1,22 +1,31 @@
-@import '@progress/kendo-theme-default/dist/all.css';
-
-/* Global styles for Portfolio */
-
-/* Reset and base styles */
+/* Global styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
     color: #333;
-    scroll-behavior: smooth;
+    background: #ffffff;
 }
 
-/* Navigation */
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
 header {
     position: fixed;
     top: 0;
@@ -59,15 +68,15 @@ header {
     color: #007bff;
 }
 
-/* Hero Section */
 .hero {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     text-align: center;
+    padding-top: 5rem;
 }
 
 .hero-content h2 {
@@ -80,24 +89,27 @@ header {
     margin-bottom: 2rem;
 }
 
-/* Button */
 .btn {
     display: inline-block;
-    padding: 0.8rem 2rem;
+    padding: 0.85rem 2rem;
     background: #007bff;
     color: white;
-    text-decoration: none;
+    border: none;
     border-radius: 5px;
-    transition: background 0.3s;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .btn:hover {
     background: #0056b3;
+    transform: translateY(-1px);
 }
 
-/* Sections */
 section {
     padding: 5rem 0;
+}
+
+main {
+    margin-top: 4.5rem;
 }
 
 .container {
@@ -112,7 +124,6 @@ h2 {
     font-size: 2.5rem;
 }
 
-/* About Section */
 .about {
     background: #f8f9fa;
 }
@@ -132,7 +143,6 @@ h2 {
     border-radius: 20px;
 }
 
-/* Projects Section */
 .project-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -151,7 +161,6 @@ h2 {
     margin-bottom: 1rem;
 }
 
-/* Contact Section */
 .contact {
     background: #343a40;
     color: white;
@@ -167,27 +176,20 @@ h2 {
     flex-direction: column;
 }
 
-.contact-form input {
-    margin-bottom: 1rem;
-    padding: 0.6rem;
-    border: none;
-    border-radius: 5px;
-}
-
+.contact-form input,
 .contact-form textarea {
     margin-bottom: 1rem;
     padding: 0.8rem;
     border: none;
     border-radius: 5px;
+}
+
+.contact-form textarea {
     min-height: 120px;
     resize: vertical;
 }
 
-.contact-form button {
-    align-self: center;
-}
-
-/* Footer */
+.footer,
 footer {
     background: #333;
     color: white;
@@ -195,7 +197,6 @@ footer {
     padding: 1rem 0;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .nav-container {
         flex-direction: column;
