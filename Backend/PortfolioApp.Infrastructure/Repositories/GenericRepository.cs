@@ -3,12 +3,12 @@ using PortfolioApp.Infrastructure.Data;
 
 namespace PortfolioApp.Infrastructure.Repositories;
 
-public class Repository<T> : IRepository<T> where T : class
+public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     private readonly ApplicationDbContext _context;
     private readonly DbSet<T> _dbSet;
 
-    public Repository(ApplicationDbContext context)
+    public GenericRepository(ApplicationDbContext context)
     {
         _context = context;
         _dbSet = context.Set<T>();

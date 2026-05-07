@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using PortfolioApp.Application.Interfaces;
-using PortfolioApp.Application.Services;
 using PortfolioApp.Infrastructure.Data;
 using PortfolioApp.Infrastructure.Repositories;
 
@@ -25,10 +23,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add Infrastructure Services
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 // Add Application Services
-builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
 
 // Add CORS if needed
 builder.Services.AddCors(options =>
