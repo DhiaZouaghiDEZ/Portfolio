@@ -1,4 +1,4 @@
-namespace PortfolioApp.Infrastructure.Repositories;
+namespace PortfolioApp.Infrastructure.Interfaces;
 
 public interface IGenericRepository<T> where T : class
 {

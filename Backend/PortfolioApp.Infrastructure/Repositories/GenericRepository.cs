@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PortfolioApp.Infrastructure.Data;
+using PortfolioApp.Infrastructure.Interfaces;
 
 namespace PortfolioApp.Infrastructure.Repositories;
 
