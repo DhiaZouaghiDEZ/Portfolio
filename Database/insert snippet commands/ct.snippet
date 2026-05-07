@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>ct</Title>
+      <Shortcut>ct</Shortcut>
+      <Description>Create Table</Description>
+      <Author>Portfolio</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>tablename</ID>
+          <ToolTip>Table name</ToolTip>
+          <Default>TableName</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="SQL">
+        <![CDATA[CREATE TABLE $tablename$ (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    CreatedDate DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    LastModifiedDate DATETIME2 NOT NULL DEFAULT GETUTCDATE()
+)]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

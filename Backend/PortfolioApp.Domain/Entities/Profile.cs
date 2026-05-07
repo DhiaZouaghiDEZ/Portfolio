@@ -2,7 +2,7 @@ namespace PortfolioApp.Domain.Entities;
 
 public class Profile
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public string? Avatar { get; set; }

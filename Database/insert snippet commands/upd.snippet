@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>upd</Title>
+      <Shortcut>upd</Shortcut>
+      <Description>Update Set Where</Description>
+      <Author>Portfolio</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>tablename</ID>
+          <ToolTip>Table name</ToolTip>
+          <Default>TableName</Default>
+        </Literal>
+        <Literal>
+          <ID>column</ID>
+          <ToolTip>Column to update</ToolTip>
+          <Default>Column1</Default>
+        </Literal>
+        <Literal>
+          <ID>value</ID>
+          <ToolTip>New value</ToolTip>
+          <Default>Value1</Default>
+        </Literal>
+        <Literal>
+          <ID>condition</ID>
+          <ToolTip>Where condition</ToolTip>
+          <Default>Id = 1</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="SQL">
+        <![CDATA[UPDATE $tablename$
+SET $column$ = $value$
+WHERE $condition$]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

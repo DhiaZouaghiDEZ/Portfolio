@@ -2,7 +2,7 @@ namespace PortfolioApp.Domain.Entities;
 
 public class Project
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public string Title { get; set; } = string.Empty;
     public string? Description { get; set; }
     public string? TechStack { get; set; } // JSON or comma-separated
