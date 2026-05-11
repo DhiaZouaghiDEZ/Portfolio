@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using PortfolioApp.Infrastructure.Data;
 using PortfolioApp.Infrastructure.Interfaces;
 using PortfolioApp.Infrastructure.Repositories;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.MSSqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +41,24 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+//Adding Serilog
+builder.Host.UseSerilog((context, services, configuration) =>
+{
+    configuration
+        .MinimumLevel.Information()
+        .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+        .MinimumLevel.Override("System", LogEventLevel.Warning)
+        .Enrich.FromLogContext()
+        .Enrich.WithMachineName()
+        .WriteTo.Console()
+        .WriteTo.MSSqlServer(
+            connectionString: context.Configuration.GetConnectionString("LogConnection"),
+            sinkOptions: new MSSqlServerSinkOptions
+            {
+                TableName = "Logs",
+                AutoCreateSqlTable = true
+            });
+});
 
 var app = builder.Build();
 
@@ -46,7 +67,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
+app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");

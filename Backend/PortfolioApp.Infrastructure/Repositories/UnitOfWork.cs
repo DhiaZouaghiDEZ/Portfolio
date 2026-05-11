@@ -1,34 +1,44 @@
-﻿using PortfolioApp.Application.Interfaces;
+﻿using Microsoft.Extensions.Logging;
+using PortfolioApp.Application.Interfaces;
 using PortfolioApp.Infrastructure.Data;
 using System.Transactions;
 
-namespace PortfolioApp.Infrastructure.Repositories
+public class UnitOfWork : IUnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork
+    private readonly ApplicationDbContext _context;
+    private readonly ILogger<UnitOfWork> _logger;
+
+    public UnitOfWork(ApplicationDbContext context, ILogger<UnitOfWork> logger)
     {
-        private readonly ApplicationDbContext _context;
+        _context = context;
+        _logger = logger;
+    }
 
-        public UnitOfWork(ApplicationDbContext context)
+    public async Task ExecuteInTransactionAsync(Func<Task> operation)
+    {
+        try
         {
-            _context = context;
-        }
-
-        public async Task ExecuteInTransactionAsync(Func<Task> operation)
-        {
+            _logger.LogInformation("Starting transaction");
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             await operation();
             await SaveChangesAsync();
             scope.Complete();
+            _logger.LogInformation("Transaction completed successfully");
         }
-
-        public async Task<int> SaveChangesAsync()
+        catch (Exception ex)
         {
-            return await _context.SaveChangesAsync();
+            _logger.LogError(ex, "Transaction failed and was rolled back");
+            throw;
         }
+    }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
+    public async Task<int> SaveChangesAsync()
+    {
+        return await _context.SaveChangesAsync();
+    }
+
+    public void Dispose()
+    {
+        _context.Dispose();
     }
 }
