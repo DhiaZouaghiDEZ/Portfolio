@@ -1,16 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Extensions.Logging;
+using PortfolioApp.Application.Interfaces;
 using PortfolioApp.Domain.Entities;
 using PortfolioApp.Infrastructure.Data;
-using PortfolioApp.Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PortfolioApp.Infrastructure.Repositories
 {
     public class ExperienceRepository : GenericRepository<Experience>, IExperienceRepository
     {
-        public ExperienceRepository(ApplicationDbContext context) : base(context)
+        public ExperienceRepository(ApplicationDbContext context, ILogger<GenericRepository<Experience>> logger) : base(context, logger)
         {
            
         }

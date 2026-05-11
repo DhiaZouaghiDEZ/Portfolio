@@ -1,16 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Extensions.Logging;
+using PortfolioApp.Application.Interfaces;
 using PortfolioApp.Domain.Entities;
 using PortfolioApp.Infrastructure.Data;
-using PortfolioApp.Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PortfolioApp.Infrastructure.Repositories
 {
     public class MessageRepository : GenericRepository<Message>, IMessageRepository
     {
-        public MessageRepository(ApplicationDbContext context) : base(context)
+        public MessageRepository(ApplicationDbContext context, ILogger<GenericRepository<Message>> logger) : base(context, logger)
         {
            
         }

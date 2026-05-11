@@ -1,13 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PortfolioApp.Domain.Entities;
-using PortfolioApp.Infrastructure.Data;
-using PortfolioApp.Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using PortfolioApp.Application.DTOs;
-using AutoMapper;
-using System.Transactions;
+using PortfolioApp.Application.Interfaces;
+using PortfolioApp.Infrastructure.Data;
 
 namespace PortfolioApp.Infrastructure.Repositories
 {
@@ -15,7 +10,7 @@ namespace PortfolioApp.Infrastructure.Repositories
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public ProfileRepository(ApplicationDbContext context, IMapper mapper, IUnitOfWork unitOfWork) : base(context)
+        public ProfileRepository(ApplicationDbContext context, IMapper mapper, IUnitOfWork unitOfWork, ILogger<GenericRepository<Domain.Entities.Profile>> logger) : base(context, logger)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
