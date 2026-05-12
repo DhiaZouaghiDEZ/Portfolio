@@ -27,7 +27,7 @@ public class ProfileController : ControllerBase
         var result = await _profileRepository.GetAllProfiles(cancellationToken);
         return Ok(result);
     }
-    [HttpGet, Route("getallprofiles/{id}")]
+    [HttpGet, Route("getprofile/{id}")]
     public async Task<IActionResult> GetProfileById(Guid id, CancellationToken cancellationToken)
     {
         var result = await _profileRepository.GetProfileById(id, cancellationToken);

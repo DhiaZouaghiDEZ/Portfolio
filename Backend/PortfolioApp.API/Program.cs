@@ -39,8 +39,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Add Infrastructure Services
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+builder.Services.AddScoped<IEducationRepository, EducationRepository>();
+builder.Services.AddScoped<IExperienceRepository, ExperienceRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(typeof(ProfileMapperProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(EducationMapperProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(ExperienceMapperProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(MessageMapperProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(ProjectMapperProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(SkillMapperProfile).Assembly);
 
 // Add Application Services
 
