@@ -2,6 +2,7 @@
 {
     public class EducationDTO 
     {
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Institution { get; set; } = string.Empty;
         public string Degree { get; set; } = string.Empty;
         public string? FieldOfStudy { get; set; }

@@ -2,6 +2,7 @@
 {
     public class ProjectDTO 
     {
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Title { get; set; } = string.Empty;
         public string? Description { get; set; }
         public string? TechStack { get; set; } // JSON or comma-separated
