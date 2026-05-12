@@ -14,14 +14,14 @@ public class UnitOfWork : IUnitOfWork
         _logger = logger;
     }
 
-    public async Task ExecuteInTransactionAsync(Func<Task> operation)
+    public async Task ExecuteInTransactionAsync(Func<Task> operation, CancellationToken cancellationToken = default)
     {
         try
         {
             _logger.LogInformation("Starting transaction");
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             await operation();
-            await SaveChangesAsync();
+            await SaveChangesAsync(cancellationToken);
             scope.Complete();
             _logger.LogInformation("Transaction completed successfully");
         }
@@ -32,9 +32,9 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    public async Task<int> SaveChangesAsync()
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.SaveChangesAsync();
+        return await _context.SaveChangesAsync(cancellationToken);
     }
 
     public void Dispose()

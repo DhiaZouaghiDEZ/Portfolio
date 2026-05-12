@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
+using PortfolioApp.Application.Interfaces;
+using PortfolioApp.Application.MapperProfile;
 using PortfolioApp.Infrastructure.Data;
-using PortfolioApp.Infrastructure.Interfaces;
 using PortfolioApp.Infrastructure.Repositories;
 using Serilog;
 using Serilog.Events;
@@ -19,8 +21,16 @@ builder.Configuration
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Add OpenAPI
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Portfolio API",
+        Version = "v1",
+        Description = "Backend API for my portfolio website"
+    });
+});
 
 // Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -28,6 +38,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add Infrastructure Services
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddAutoMapper(typeof(ProfileMapperProfile).Assembly);
 
 // Add Application Services
 
@@ -65,7 +78,12 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Portfolio API v1");
+        c.RoutePrefix = string.Empty; // makes Swagger the default page at root URL
+    });
 }
 app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();

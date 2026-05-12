@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PortfolioApp.Infrastructure.Data;
-using PortfolioApp.Infrastructure.Interfaces;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
@@ -16,11 +15,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _logger = logger;
     }
 
-    public async Task<T?> GetByIdAsync(Guid id)
+    public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            return await _dbSet.FindAsync(id);
+            return await _dbSet.FindAsync(new object[] { id }, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -29,11 +28,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         }
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.ToListAsync(cancellationToken);
         }
         catch (Exception ex)
         {
@@ -42,12 +41,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         }
     }
 
-    public async Task<T> AddAsync(T entity)
+    public async Task<T> AddAsync(T entity, CancellationToken cancellationToken = default)
     {
         try
         {
             _logger.LogInformation("Adding new {Entity}", typeof(T).Name);
-            await _dbSet.AddAsync(entity);
+            await _dbSet.AddAsync(entity, cancellationToken);
             return entity;
         }
         catch (Exception ex)
@@ -57,7 +56,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         }
     }
 
-    public async Task<bool> UpdateAsync(T entity)
+    public async Task<bool> UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -72,17 +71,16 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         }
     }
 
-    public async Task<bool> DeleteAsync(Guid id)
+    public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            var entity = await GetByIdAsync(id);
+            var entity = await GetByIdAsync(id, cancellationToken);
             if (entity == null)
             {
                 _logger.LogWarning("{Entity} with id {Id} not found for deletion", typeof(T).Name, id);
                 return false;
             }
-
             _logger.LogInformation("Deleting {Entity} with id {Id}", typeof(T).Name, id);
             _dbSet.Remove(entity);
             return true;

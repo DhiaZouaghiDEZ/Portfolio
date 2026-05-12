@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using PortfolioApp.Application.DTOs;
 using PortfolioApp.Application.Interfaces;
+using PortfolioApp.Domain.Entities;
 using PortfolioApp.Infrastructure.Data;
 
 namespace PortfolioApp.Infrastructure.Repositories
@@ -15,7 +16,7 @@ namespace PortfolioApp.Infrastructure.Repositories
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
-        public async Task<ProfileDTO> CreateProfile(ProfileDTO profile)
+        public async Task<ProfileDTO> CreateProfile(ProfileDTO profile, CancellationToken cancellationToken)
         {
             if (profile == null)
                 throw new ArgumentNullException(nameof(profile));
@@ -24,8 +25,47 @@ namespace PortfolioApp.Infrastructure.Repositories
 
             await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-                await AddAsync(newProfile);
+                await AddAsync(newProfile, cancellationToken);
+            }, cancellationToken);
+
+            return _mapper.Map<ProfileDTO>(newProfile);
+        }
+        public async Task<List<Domain.Entities.Profile>> GetAllProfiles(CancellationToken cancellationToken)
+        {
+            var returnedProfiles = new List<Domain.Entities.Profile>();
+            await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
+                var profiles = await GetAllAsync(cancellationToken);
+                returnedProfiles.AddRange(profiles.ToList());
             });
+            return returnedProfiles;
+        }
+        public async Task<ProfileDTO> GetProfileById(Guid id, CancellationToken cancellationToken)
+        {
+            var profile = new Domain.Entities.Profile();
+            await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
+                profile = await GetByIdAsync(id,cancellationToken);
+            });
+            return _mapper.Map<ProfileDTO>(profile);
+        }
+        public async Task RemoveProfileById(Guid id, CancellationToken cancellationToken)
+        {
+            await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
+                await DeleteAsync(id, cancellationToken);
+            });
+        }
+        public async Task<ProfileDTO> UpdateProfile(ProfileDTO profile,CancellationToken cancellationToken)
+        {
+            if (profile == null)
+                throw new ArgumentNullException(nameof(profile));
+            var newProfile = _mapper.Map<Domain.Entities.Profile>(profile);
+            newProfile.LastModifiedDate = DateTime.UtcNow;
+            await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
+                await UpdateAsync(newProfile, cancellationToken);
+            }, cancellationToken);
 
             return _mapper.Map<ProfileDTO>(newProfile);
         }
