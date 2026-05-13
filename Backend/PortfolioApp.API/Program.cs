@@ -4,6 +4,7 @@ using PortfolioApp.Application.Interfaces;
 using PortfolioApp.Application.MapperProfile;
 using PortfolioApp.Infrastructure.Data;
 using PortfolioApp.Infrastructure.Repositories;
+using PortfolioApp.Infrastructure.Services;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
@@ -51,6 +52,7 @@ builder.Services.AddAutoMapper(typeof(ExperienceMapperProfile).Assembly);
 builder.Services.AddAutoMapper(typeof(MessageMapperProfile).Assembly);
 builder.Services.AddAutoMapper(typeof(ProjectMapperProfile).Assembly);
 builder.Services.AddAutoMapper(typeof(SkillMapperProfile).Assembly);
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // Add Application Services
 
