@@ -96,15 +96,17 @@ builder.Services.AddAuthorization();
 //Add rate limiting
 builder.Services.AddRateLimiter(options =>
 {
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
     options.AddPolicy("ContactForm", httpContext =>
         RateLimitPartition.GetFixedWindowLimiter(
             partitionKey: httpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault()
-              ?? httpContext.Connection.RemoteIpAddress?.ToString()
-              ?? "unknown",
+                          ?? httpContext.Connection.RemoteIpAddress?.ToString()
+                          ?? "unknown",
             factory: _ => new FixedWindowRateLimiterOptions
             {
-                PermitLimit = 5,
-                Window = TimeSpan.FromMinutes(10),
+                PermitLimit = builder.Configuration.GetValue<int>("PermitLimit"),
+                Window = TimeSpan.FromMinutes(builder.Configuration.GetValue<int>("CoolDownWindow")),
                 QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
                 QueueLimit = 0
             }));
