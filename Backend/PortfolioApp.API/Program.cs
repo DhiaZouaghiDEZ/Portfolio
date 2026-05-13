@@ -96,13 +96,18 @@ builder.Services.AddAuthorization();
 //Add rate limiting
 builder.Services.AddRateLimiter(options =>
 {
-    options.AddFixedWindowLimiter("ContactForm", config =>
-    {
-        config.PermitLimit = 5;
-        config.Window = TimeSpan.FromMinutes(10);
-        config.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-        config.QueueLimit = 0;
-    });
+    options.AddPolicy("ContactForm", httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault()
+              ?? httpContext.Connection.RemoteIpAddress?.ToString()
+              ?? "unknown",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 5,
+                Window = TimeSpan.FromMinutes(10),
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 0
+            }));
 });
 // Add CORS if needed
 builder.Services.AddCors(options =>
