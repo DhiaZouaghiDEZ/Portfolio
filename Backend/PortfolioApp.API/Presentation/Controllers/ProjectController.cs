@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PortfolioApp.Application.DTOs;
 using PortfolioApp.Application.Interfaces;
@@ -18,6 +19,7 @@ namespace PortfolioApp.API.Presentation.Controllers
             _projectRepository = projectRepository;
         }
         [HttpPost, Route("addproject")]
+        [Authorize]
         public async Task<IActionResult> AddProject([FromBody] ProjectDTO project, CancellationToken cancellationToken)
         {
             var result = await _projectRepository.AddProject(project, cancellationToken);
@@ -36,12 +38,14 @@ namespace PortfolioApp.API.Presentation.Controllers
             return Ok(result);
         }
         [HttpDelete, Route("removeproject/{id}")]
+        [Authorize]
         public async Task<IActionResult> RemoveProjectById(Guid id, CancellationToken cancellationToken)
         {
             await _projectRepository.RemoveProjectById(id, cancellationToken);
             return Ok();
         }
         [HttpPost, Route("updateproject")]
+        [Authorize]
         public async Task<IActionResult> UpdateProject([FromBody] ProjectDTO project, CancellationToken cancellationToken)
         {
             var result = await _projectRepository.UpdateProject(project, cancellationToken);

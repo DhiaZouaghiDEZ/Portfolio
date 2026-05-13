@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PortfolioApp.Application.DTOs;
 using PortfolioApp.Application.Interfaces;
@@ -17,6 +18,7 @@ namespace PortfolioApp.API.Presentation.Controllers
             _experienceRepository = experienceRepository;
         }
         [HttpPost, Route("addexperience")]
+        [Authorize]
         public async Task<IActionResult> AddExperience([FromBody] ExperienceDTO experience, CancellationToken cancellationToken)
         {
             var result = await _experienceRepository.AddExperience(experience, cancellationToken);
@@ -35,12 +37,14 @@ namespace PortfolioApp.API.Presentation.Controllers
             return Ok(result);
         }
         [HttpDelete, Route("removeexperience/{id}")]
+        [Authorize]
         public async Task<IActionResult> RemoveExperienceById(Guid id, CancellationToken cancellationToken)
         {
             await _experienceRepository.RemoveExperienceById(id, cancellationToken);
             return Ok();
         }
         [HttpPost, Route("updateexperience")]
+        [Authorize]
         public async Task<IActionResult> UpdateExperience([FromBody] ExperienceDTO experience, CancellationToken cancellationToken)
         {
             var result = await _experienceRepository.UpdateExperience(experience, cancellationToken);

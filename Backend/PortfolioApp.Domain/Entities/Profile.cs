@@ -10,8 +10,7 @@ public class Profile
     public string? Email { get; set; }
     public string? Phone { get; set; }
 
-    // Social Links (JSON or separate entity - storing as string for now)
-    public string? SocialLinks { get; set; }
+    public ICollection<SocialLink> SocialLinks { get; set; } = new List<SocialLink>();
 
     public DateTime CreatedDate { get; set; }
     public DateTime LastModifiedDate { get; set; }

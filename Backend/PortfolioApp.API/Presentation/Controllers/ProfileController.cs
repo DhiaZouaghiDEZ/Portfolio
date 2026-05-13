@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PortfolioApp.Application.DTOs;
 using PortfolioApp.Application.Interfaces;
 
@@ -16,6 +17,7 @@ public class ProfileController : ControllerBase
     }
 
     [HttpPost, Route("createprofile")]
+    [Authorize]
     public async Task<IActionResult> CreateProfile([FromBody] ProfileDTO profile, CancellationToken cancellationToken)
     {
         var result = await _profileRepository.CreateProfile(profile, cancellationToken);
@@ -34,12 +36,14 @@ public class ProfileController : ControllerBase
         return Ok(result);
     }
     [HttpDelete, Route("removeprofile/{id}")]
+    [Authorize]
     public async Task<IActionResult> RemoveProfileById(Guid id, CancellationToken cancellationToken)
     {
         await _profileRepository.RemoveProfileById(id, cancellationToken);
         return Ok();
     }
     [HttpPost, Route("updateprofile")]
+    [Authorize]
     public async Task<IActionResult> UpdateProfile([FromBody] ProfileDTO profile, CancellationToken cancellationToken)
     {
         var result = await _profileRepository.UpdateProfile(profile, cancellationToken);

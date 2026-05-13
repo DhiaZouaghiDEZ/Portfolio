@@ -15,12 +15,12 @@ public class ApplicationDbContext : DbContext
     public DbSet<Experience> Experiences { get; set; } = null!;
     public DbSet<Education> Educations { get; set; } = null!;
     public DbSet<Message> Messages { get; set; } = null!;
+    public DbSet<SocialLink> SocialLinks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configure Profile entity
         modelBuilder.Entity<Profile>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -46,7 +46,6 @@ public class ApplicationDbContext : DbContext
                 .HasDefaultValueSql("GETUTCDATE()");
         });
 
-        // Configure Project entity
         modelBuilder.Entity<Project>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -65,7 +64,6 @@ public class ApplicationDbContext : DbContext
                 .HasDefaultValueSql("GETUTCDATE()");
         });
 
-        // Configure Skill entity
         modelBuilder.Entity<Skill>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -87,7 +85,6 @@ public class ApplicationDbContext : DbContext
                 .HasDefaultValueSql("GETUTCDATE()");
         });
 
-        // Configure Experience entity
         modelBuilder.Entity<Experience>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -110,7 +107,6 @@ public class ApplicationDbContext : DbContext
                 .HasDefaultValueSql("GETUTCDATE()");
         });
 
-        // Configure Education entity
         modelBuilder.Entity<Education>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -136,7 +132,6 @@ public class ApplicationDbContext : DbContext
                 .HasDefaultValueSql("GETUTCDATE()");
         });
 
-        // Configure Message entity
         modelBuilder.Entity<Message>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -164,6 +159,18 @@ public class ApplicationDbContext : DbContext
 
             entity.Property(e => e.LastModifiedDate)
                 .HasDefaultValueSql("GETUTCDATE()");
+        });
+
+        modelBuilder.Entity<SocialLink>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Platform).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.Url).HasMaxLength(500).IsRequired();
+
+            entity.HasOne(e => e.Profile)
+                  .WithMany(p => p.SocialLinks)
+                  .HasForeignKey(e => e.ProfileId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

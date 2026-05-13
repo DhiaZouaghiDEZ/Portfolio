@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using PortfolioApp.Application.DTOs;
 using PortfolioApp.Application.Interfaces;
 
@@ -17,6 +19,7 @@ namespace PortfolioApp.API.Presentation.Controllers
             _messageRepository = messageRepository;
         }
         [HttpPost, Route("addmessage")]
+        [EnableRateLimiting("ContactForm")]
         public async Task<IActionResult> AddMessage([FromBody] MessageDTO message, CancellationToken cancellationToken)
         {
             var result = await _messageRepository.AddMessage(message, cancellationToken);
@@ -35,12 +38,14 @@ namespace PortfolioApp.API.Presentation.Controllers
             return Ok(result);
         }
         [HttpDelete, Route("removemessage/{id}")]
+        [Authorize]
         public async Task<IActionResult> RemoveMessageById(Guid id, CancellationToken cancellationToken)
         {
             await _messageRepository.RemoveMessageById(id, cancellationToken);
             return Ok();
         }
         [HttpPost, Route("updatemessage")]
+        [Authorize]
         public async Task<IActionResult> UpdateMessage([FromBody] MessageDTO message, CancellationToken cancellationToken)
         {
             var result = await _messageRepository.UpdateMessage(message, cancellationToken);
