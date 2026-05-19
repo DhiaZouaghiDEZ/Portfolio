@@ -10,6 +10,7 @@ export interface Profile {
     title: string;
     avatar?: string;
     bio?: string;
+    heroSectionDescription?: string;
     email?: string;
     phone?: string;
     socialLinks: SocialLink[];

@@ -7,6 +7,7 @@
         public string Title { get; set; } = string.Empty;
         public string? Avatar { get; set; }
         public string? Bio { get; set; }
+        public string? HeroSectionDescription { get; set; }
         public string? Email { get; set; }
         public string? Phone { get; set; }
         public List<SocialLinkDTO> SocialLinks { get; set; } = new List<SocialLinkDTO>();

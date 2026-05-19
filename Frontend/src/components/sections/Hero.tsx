@@ -11,7 +11,9 @@ function Hero() {
     // Falls back to placeholder while loading
     const title = profile?.name ?? 'Dhiaeddine Zouaghi';
     const subtitle = profile ? `${profile.title}` : 'Software Engineer';
-    const description = 'Passionate about building impactful software solutions.';
+    const description = profile
+        ? `${profile.heroSectionDescription}`
+        : 'Software Engineer open to new opportunities in Hamburg and North Germany. Four years building enterprise .NET backends and Angular frontends, with hands-on Azure cloud experience and an AZ-204 certification. I am open to Fullstack, Backend, Frontend and Software positions.';
 
     useEffect(() => {
         const timer = setTimeout(() => setVisible(true), 100);
