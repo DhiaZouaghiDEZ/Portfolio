@@ -10,7 +10,7 @@ using PortfolioApp.Infrastructure.Repositories;
 using PortfolioApp.Infrastructure.Services;
 using Serilog;
 using Serilog.Events;
-using Serilog.Sinks.MSSqlServer;
+using Serilog.Sinks.PostgreSQL.ColumnWriters;
 using System.Text;
 using System.Threading.RateLimiting;
 
@@ -60,7 +60,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add Infrastructure Services
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -129,6 +129,15 @@ builder.Services.AddCors(options =>
 //Adding Serilog
 builder.Host.UseSerilog((context, services, configuration) =>
 {
+    var columnOptions = new Dictionary<string, ColumnWriterBase>
+    {
+        { "Message", new RenderedMessageColumnWriter() },
+        { "Level", new LevelColumnWriter() },
+        { "Timestamp", new TimestampColumnWriter() },
+        { "Exception", new ExceptionColumnWriter() },
+        { "Properties", new PropertiesColumnWriter() }
+    };
+
     configuration
         .MinimumLevel.Information()
         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
@@ -136,13 +145,13 @@ builder.Host.UseSerilog((context, services, configuration) =>
         .Enrich.FromLogContext()
         .Enrich.WithMachineName()
         .WriteTo.Console()
-        .WriteTo.MSSqlServer(
+        .WriteTo.PostgreSQL(
             connectionString: context.Configuration.GetConnectionString("LogConnection"),
-            sinkOptions: new MSSqlServerSinkOptions
-            {
-                TableName = "Logs",
-                AutoCreateSqlTable = true
-            });
+            tableName: "Logs",
+            columnOptions: columnOptions,
+            needAutoCreateTable: true,
+            schemaName: "public"
+        );
 });
 
 var app = builder.Build();

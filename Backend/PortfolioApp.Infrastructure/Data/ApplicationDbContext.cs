@@ -40,10 +40,10 @@ public class ApplicationDbContext : DbContext
                 .HasMaxLength(20);
 
             entity.Property(e => e.CreatedDate)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("NOW()");
 
             entity.Property(e => e.LastModifiedDate)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("NOW()");
         });
 
         modelBuilder.Entity<Project>(entity =>
@@ -58,10 +58,10 @@ public class ApplicationDbContext : DbContext
                 .HasMaxLength(50);
 
             entity.Property(e => e.CreatedDate)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("NOW()");
 
             entity.Property(e => e.LastModifiedDate)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("NOW()");
         });
 
         modelBuilder.Entity<Skill>(entity =>
@@ -79,10 +79,10 @@ public class ApplicationDbContext : DbContext
                 .IsRequired();
 
             entity.Property(e => e.CreatedDate)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("NOW()");
 
             entity.Property(e => e.LastModifiedDate)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("NOW()");
         });
 
         modelBuilder.Entity<Experience>(entity =>
@@ -101,10 +101,10 @@ public class ApplicationDbContext : DbContext
                 .IsRequired();
 
             entity.Property(e => e.CreatedDate)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("NOW()");
 
             entity.Property(e => e.LastModifiedDate)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("NOW()");
         });
 
         modelBuilder.Entity<Education>(entity =>
@@ -126,10 +126,10 @@ public class ApplicationDbContext : DbContext
                 .IsRequired();
 
             entity.Property(e => e.CreatedDate)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("NOW()");
 
             entity.Property(e => e.LastModifiedDate)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("NOW()");
         });
 
         modelBuilder.Entity<Message>(entity =>
@@ -152,13 +152,13 @@ public class ApplicationDbContext : DbContext
                 .IsRequired();
 
             entity.Property(e => e.SubmittedDate)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("NOW()");
 
             entity.Property(e => e.CreatedDate)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("NOW()");
 
             entity.Property(e => e.LastModifiedDate)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("NOW()");
         });
 
         modelBuilder.Entity<SocialLink>(entity =>
