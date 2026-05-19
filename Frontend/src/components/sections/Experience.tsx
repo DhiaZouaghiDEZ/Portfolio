@@ -1,65 +1,19 @@
-const experienceData = [
-    {
-        company: 'CED Tunisia',
-        role: 'Software Engineer – Full-Stack Development (.NET / Angular)',
-        startDate: 'Oct 2022',
-        endDate: 'Mar 2026',
-        isCurrent: false,
-        location: 'Tunis, Tunisia',
-        description: [
-            'Diagnosed and resolved serious production issues using detailed log analysis and improving observability.',
-            'Developed modular RESTful APIs using .NET 6 to simplify integration across services.',
-            'Integrated multiple RESTful APIs over 6 different Angular projects by designing and developing user friendly interfaces.',
-            'Migrated 6 Angular 4 applications to Angular 13+, enhancing frontend stability and maintainability.',
-            'Refactored and optimized .NET 6 services with infrastructure engineers to deliver better backend and database performance.',
-            'Built and maintained CI/CD pipelines using Azure DevOps, accelerating deployment and reducing release errors.',
-            'Mentored junior developers and supervised interns by conducting code reviews for best practices.',
-            'Introduced and implemented API documentation using Markdown files and Mermaid diagrams.',
-        ],
-        techStack: [
-            'C#',
-            '.NET 6',
-            'Angular',
-            'TypeScript',
-            'SQL Server',
-            'Azure DevOps',
-            'Git',
-            'xUnit',
-        ],
-    },
-    {
-        company: 'CED Tunisia',
-        role: 'Graduate Intern – Full-Stack & Data Science',
-        startDate: 'Feb 2022',
-        endDate: 'Jul 2022',
-        isCurrent: false,
-        location: 'Tunis, Tunisia',
-        description: [
-            'Created a Python-based machine learning model for invoice categorization, reaching 90% accuracy.',
-            'Developed APIs using .NET 6 to handle invoice storage and retrieval using Azure Blob Storage and SQL Server.',
-            'Designed and implemented user interfaces to display grids and details of classified invoices using Angular 14.',
-            'Delivered a frontend dashboard using Angular 14 with Microsoft Graph API integration.',
-            'Designed architecture diagrams and technical documentation to aid in onboarding.',
-        ],
-        techStack: ['C#', '.NET 6', 'Angular 14', 'Python', 'Azure Blob Storage', 'SQL Server'],
-    },
-    {
-        company: 'Millenia Engineering',
-        role: 'Software Engineering Intern – Backend & Data Systems',
-        startDate: 'Jun 2021',
-        endDate: 'Aug 2021',
-        isCurrent: false,
-        location: 'Bizerte, Tunisia',
-        description: [
-            'Implemented a Node.js telemetry service that decodes industrial signals from Modbus analyzers.',
-            'Designed MongoDB schemas for efficient storage and retrieval of time-series data.',
-            'Automated test checks to validate data flow and improve debugging efficiency.',
-        ],
-        techStack: ['Node.js', 'JavaScript', 'Angular', 'MongoDB'],
-    },
-];
+import { useApi } from '../../hooks/useApi';
+import { portfolioApi } from '../../services/portfolioservice';
+import { Experiences } from '../../types';
+
+// Helper to format dates from ISO string
+function formatDate(dateStr?: string): string {
+    if (!dateStr) return 'Present';
+    return new Date(dateStr).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+}
 
 function Experience() {
+    const { data: experiences, loading, error } = useApi<Experiences[]>(portfolioApi.getExperience);
+
+    if (loading) return <div style={styles.state}>Loading...</div>;
+    if (error || !experiences) return <div style={styles.state}>Failed to load experience.</div>;
+
     return (
         <section id="experience" style={styles.section}>
             <div style={styles.container}>
@@ -67,45 +21,48 @@ function Experience() {
                 <h2 style={styles.sectionTitle}>Where I've worked</h2>
 
                 <div style={styles.timeline}>
-                    {experienceData.map((exp, index) => (
-                        <div key={index} style={styles.timelineItem}>
-                            {/* Left side - timeline line and dot */}
+                    {experiences.map((exp, index) => (
+                        <div key={exp.id} style={styles.timelineItem}>
                             <div style={styles.timelineLeft}>
                                 <div style={styles.dot} />
-                                {/* Only render the line if not the last item */}
-                                {index < experienceData.length - 1 && <div style={styles.line} />}
+                                {index < experiences.length - 1 && <div style={styles.line} />}
                             </div>
 
-                            {/* Right side - content */}
                             <div style={styles.timelineContent}>
                                 <div style={styles.cardHeader}>
                                     <div>
                                         <h3 style={styles.role}>{exp.role}</h3>
-                                        <p style={styles.company}>
-                                            {exp.company} — {exp.location}
-                                        </p>
+                                        <p style={styles.company}>{exp.company}</p>
                                     </div>
                                     <span style={styles.dateTag}>
-                                        {exp.startDate} → {exp.endDate}
+                                        {formatDate(exp.startDate)} →{' '}
+                                        {exp.isCurrent ? 'Present' : formatDate(exp.endDate)}
                                     </span>
                                 </div>
 
-                                <ul style={styles.descriptionList}>
-                                    {exp.description.map((point, i) => (
-                                        <li key={i} style={styles.descriptionItem}>
-                                            <span style={styles.bullet}>▹</span>
-                                            {point}
-                                        </li>
-                                    ))}
-                                </ul>
+                                {exp.description && (
+                                    <ul style={styles.descriptionList}>
+                                        {exp.description
+                                            .split('\n')
+                                            .filter(Boolean)
+                                            .map((point, i) => (
+                                                <li key={i} style={styles.descriptionItem}>
+                                                    <span style={styles.bullet}>▹</span>
+                                                    {point}
+                                                </li>
+                                            ))}
+                                    </ul>
+                                )}
 
-                                <div style={styles.techRow}>
-                                    {exp.techStack.map((tech) => (
-                                        <span key={tech} style={styles.techBadge}>
-                                            {tech}
-                                        </span>
-                                    ))}
-                                </div>
+                                {exp.techStack && (
+                                    <div style={styles.techRow}>
+                                        {exp.techStack.split(',').map((tech) => (
+                                            <span key={tech} style={styles.techBadge}>
+                                                {tech.trim()}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))}

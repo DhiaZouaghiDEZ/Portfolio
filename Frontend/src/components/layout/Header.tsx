@@ -3,6 +3,7 @@ import { useState } from 'react';
 const navLinks = [
     { label: 'About', href: '#about' },
     { label: 'Experience', href: '#experience' },
+    { label: 'Education & Certificates', href: '#education' },
     { label: 'Projects', href: '#projects' },
     { label: 'Contact', href: '#contact' },
 ];
@@ -31,7 +32,13 @@ function Header() {
                             {link.label}
                         </button>
                     ))}
-                    <button style={styles.resumeBtn}>Resume</button>
+                    <a
+                        href="/assets/resume/Dhiaeddine_Zouaghi_Resume.pdf"
+                        download="Dhiaeddine_Zouaghi_Resume.pdf"
+                        style={styles.resumeBtn}
+                    >
+                        Resume
+                    </a>
                 </nav>
             </div>
         </header>
@@ -85,8 +92,9 @@ const styles: Record<string, React.CSSProperties> = {
         fontSize: '13px',
         padding: '6px 16px',
         borderRadius: '6px',
-        cursor: 'pointer',
         marginLeft: '8px',
+        textDecoration: 'none',
+        display: 'inline-block',
     },
 };
 

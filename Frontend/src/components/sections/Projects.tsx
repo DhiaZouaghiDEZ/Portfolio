@@ -1,26 +1,6 @@
-// Placeholder data - will be replaced with API data later
-const projectsData = [
-    {
-        title: 'Personal Portfolio Application',
-        description:
-            'Full-stack portfolio site built from scratch to demonstrate production-grade architecture and DevOps practices. Clean Architecture .NET 10 API, React frontend, containerized with Docker and deployed to Azure Kubernetes Service.',
-        techStack: [
-            '.NET 10',
-            'React',
-            'TypeScript',
-            'SQL Server',
-            'Docker',
-            'Kubernetes',
-            'Azure',
-        ],
-        githubUrl: 'https://github.com/DhiaZouaghiDEZ',
-        liveUrl: null,
-        featured: true,
-        status: 'In Progress',
-    },
-];
-
-// Icon components - simple SVG icons inline to avoid installing packages
+import { useApi } from '../../hooks/useApi';
+import { portfolioApi } from '../../services/portfolioservice';
+import { Project } from '../../types';
 function GitHubIcon() {
     return (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -47,6 +27,21 @@ function ExternalLinkIcon() {
 }
 
 function Projects() {
+    const { data: projects, loading, error } = useApi<Project[]>(portfolioApi.getProjects);
+
+    if (loading) return <div style={styles.state}>Loading...</div>;
+    if (error || !projects) return <div style={styles.state}>Failed to load projects.</div>;
+
+    // Parse links JSON string if present - format: {"github": "url", "live": "url"}
+    const parseLinks = (linksStr?: string) => {
+        if (!linksStr) return { github: null, live: null };
+        try {
+            return JSON.parse(linksStr);
+        } catch {
+            return { github: null, live: null };
+        }
+    };
+
     return (
         <section id="projects" style={styles.section}>
             <div style={styles.container}>
@@ -54,74 +49,74 @@ function Projects() {
                 <h2 style={styles.sectionTitle}>What I've built</h2>
 
                 <div style={styles.grid}>
-                    {projectsData.map((project, index) => (
-                        <div key={index} style={styles.card}>
-                            {/* Card top row - status badge and links */}
-                            <div style={styles.cardTop}>
-                                <span
-                                    style={{
-                                        ...styles.statusBadge,
-                                        background:
-                                            project.status === 'In Progress'
-                                                ? 'rgba(99, 102, 241, 0.1)'
-                                                : 'rgba(34, 197, 94, 0.1)',
-                                        color:
-                                            project.status === 'In Progress'
-                                                ? '#6366f1'
-                                                : '#22c55e',
-                                        borderColor:
-                                            project.status === 'In Progress'
-                                                ? 'rgba(99, 102, 241, 0.4)'
-                                                : 'rgba(34, 197, 94, 0.4)',
-                                    }}
-                                >
-                                    {project.status}
-                                </span>
-
-                                <div style={styles.links}>
-                                    {project.githubUrl && (
-                                        <a
-                                            href={project.githubUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            style={styles.iconLink}
-                                        >
-                                            <GitHubIcon />
-                                        </a>
-                                    )}
-                                    {project.liveUrl && (
-                                        <a
-                                            href={project.liveUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            style={styles.iconLink}
-                                        >
-                                            <ExternalLinkIcon />
-                                        </a>
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* Title and description */}
-                            <h3 style={styles.projectTitle}>{project.title}</h3>
-                            <p style={styles.projectDescription}>{project.description}</p>
-
-                            {/* Tech stack badges */}
-                            <div style={styles.techRow}>
-                                {project.techStack.map((tech) => (
-                                    <span key={tech} style={styles.techBadge}>
-                                        {tech}
+                    {projects.map((project) => {
+                        const links = parseLinks(project.links);
+                        return (
+                            <div key={project.id} style={styles.card}>
+                                <div style={styles.cardTop}>
+                                    <span
+                                        style={{
+                                            ...styles.statusBadge,
+                                            background:
+                                                project.status === 'in-progress'
+                                                    ? 'rgba(99, 102, 241, 0.1)'
+                                                    : 'rgba(34, 197, 94, 0.1)',
+                                            color:
+                                                project.status === 'in-progress'
+                                                    ? '#6366f1'
+                                                    : '#22c55e',
+                                            borderColor:
+                                                project.status === 'in-progress'
+                                                    ? 'rgba(99, 102, 241, 0.4)'
+                                                    : 'rgba(34, 197, 94, 0.4)',
+                                        }}
+                                    >
+                                        {project.status}
                                     </span>
-                                ))}
+                                    <div style={styles.links}>
+                                        {links.github && (
+                                            <a
+                                                href={links.github}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                style={styles.iconLink}
+                                            >
+                                                <GitHubIcon />
+                                            </a>
+                                        )}
+                                        {links.live && (
+                                            <a
+                                                href={links.live}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                style={styles.iconLink}
+                                            >
+                                                <ExternalLinkIcon />
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <h3 style={styles.projectTitle}>{project.title}</h3>
+                                <p style={styles.projectDescription}>{project.description}</p>
+
+                                {project.techStack && (
+                                    <div style={styles.techRow}>
+                                        {project.techStack.split(',').map((tech) => (
+                                            <span key={tech} style={styles.techBadge}>
+                                                {tech.trim()}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </section>
     );
 }
-
 const styles: Record<string, React.CSSProperties> = {
     section: {
         padding: '100px 0',

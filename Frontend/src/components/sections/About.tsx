@@ -1,16 +1,17 @@
 // Placeholder data - will be replaced with API data later
-const aboutData = {
-    summary:
-        'I am a Software Engineer with 4 years of professional experience, starting my career as an intern at CED Tunisia and growing into a fully-fledged engineer. I specialize in building scalable, clean, and maintainable applications using .NET, Angular, and Azure. I am passionate about clean architecture, cloud infrastructure, and writing code that lasts.',
-    details: [
-        { label: 'Location', value: 'Hamburg, Germany' },
-        { label: 'Experience', value: '4 Years' },
-        { label: 'Education', value: 'ENSI — Software Engineering' },
-        { label: 'Languages', value: 'Arabic, French, English, German (learning)' },
-    ],
-};
+import { useApi } from '../../hooks/useApi';
+import { portfolioApi } from '../../services/portfolioservice';
+import { Profile } from '../../types';
 
 function About() {
+    const { data, loading, error } = useApi<Profile[]>(portfolioApi.getProfile);
+
+    // First or default since we only have one profile
+    const profile = data?.[0] ?? null;
+
+    if (loading) return <div style={styles.state}>Loading...</div>;
+    if (error || !profile) return <div style={styles.state}>Failed to load profile.</div>;
+
     return (
         <section id="about" style={styles.section}>
             <div style={styles.container}>
@@ -18,19 +19,24 @@ function About() {
                 <h2 style={styles.sectionTitle}>Who I am</h2>
 
                 <div style={styles.grid}>
-                    {/* Left - summary text */}
                     <div style={styles.left}>
-                        <p style={styles.summary}>{aboutData.summary}</p>
+                        <p style={styles.summary}>{profile.bio}</p>
                     </div>
 
-                    {/* Right - details card */}
                     <div style={styles.card}>
-                        {aboutData.details.map((detail) => (
-                            <div key={detail.label} style={styles.detailRow}>
-                                <span style={styles.detailLabel}>{detail.label}</span>
-                                <span style={styles.detailValue}>{detail.value}</span>
-                            </div>
-                        ))}
+                        {[
+                            { label: 'Name', value: profile.name },
+                            { label: 'Title', value: profile.title },
+                            { label: 'Email', value: profile.email },
+                            { label: 'Phone', value: profile.phone },
+                        ]
+                            .filter((d) => d.value)
+                            .map((detail) => (
+                                <div key={detail.label} style={styles.detailRow}>
+                                    <span style={styles.detailLabel}>{detail.label}</span>
+                                    <span style={styles.detailValue}>{detail.value}</span>
+                                </div>
+                            ))}
                     </div>
                 </div>
             </div>
@@ -102,6 +108,12 @@ const styles: Record<string, React.CSSProperties> = {
     detailValue: {
         fontSize: '14px',
         color: '#e2e8f0',
+    },
+    state: {
+        padding: '100px 24px',
+        textAlign: 'center' as const,
+        color: '#94a3b8',
+        fontSize: '14px',
     },
 };
 

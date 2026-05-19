@@ -1,91 +1,48 @@
-const educationData = [
-    {
-        institution: 'National School of Computer Science (ENSI)',
-        degree: 'Computer Science Engineering Degree',
-        field: 'Software Engineering',
-        startDate: 'Sept 2019',
-        endDate: 'Sept 2022',
-        location: 'Manouba, Tunisia',
-        description:
-            'Prestigious engineering school, one of the top computer science institutions in Tunisia and North Africa. Graduated with a degree in Software Engineering covering algorithms, data structures, software architecture, databases, and distributed systems.',
-    },
-    {
-        institution: 'Preparatory Institute for Engineering Studies of Bizerte (IPEIB)',
-        degree: 'Physics and Chemistry for Engineering',
-        field: 'Preparatory Classes',
-        startDate: 'Sept 2017',
-        endDate: 'Sept 2019',
-        location: 'Bizerte, Tunisia',
-        description:
-            'Intensive two-year preparatory program for engineering school entrance exams. Ranked 123rd among 1000+ participants nationally.',
-    },
-];
+import { useApi } from '../../hooks/useApi';
+import { portfolioApi } from '../../services/portfolioservice';
+import { Educations } from '../../types';
 
-const certificatesData = [
-    {
-        title: 'AZ-204: Microsoft Azure Developer Associate',
-        issuer: 'Microsoft',
-        date: 'Aug 2025',
-    },
-    {
-        title: 'TOEIC: Professional Proficiency in English',
-        issuer: 'TOEIC Amideast',
-        date: 'Apr 2022',
-        score: '975/990',
-    },
-];
+function formatDate(dateStr?: string): string {
+    if (!dateStr) return 'Present';
+    return new Date(dateStr).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+}
 
 function Education() {
+    const { data: educations, loading, error } = useApi<Educations[]>(portfolioApi.getEducation);
+
+    if (loading) return <div style={styles.state}>Loading...</div>;
+    if (error || !educations) return <div style={styles.state}>Failed to load education.</div>;
+
     return (
         <section id="education" style={styles.section}>
             <div style={styles.container}>
                 <p style={styles.sectionLabel}>Education</p>
                 <h2 style={styles.sectionTitle}>Academic background</h2>
 
-                {/* Education cards */}
                 <div style={styles.cardsWrapper}>
-                    {educationData.map((edu, index) => (
-                        <div key={index} style={styles.card}>
+                    {educations.map((edu) => (
+                        <div key={edu.id} style={styles.card}>
                             <div style={styles.cardHeader}>
                                 <div>
                                     <h3 style={styles.degree}>{edu.degree}</h3>
                                     <p style={styles.institution}>{edu.institution}</p>
-                                    <p style={styles.location}>{edu.location}</p>
+                                    {edu.fieldOfStudy && (
+                                        <p style={styles.field}>{edu.fieldOfStudy}</p>
+                                    )}
                                 </div>
                                 <span style={styles.dateTag}>
-                                    {edu.startDate} → {edu.endDate}
+                                    {formatDate(edu.startDate)} →{' '}
+                                    {edu.isCurrent ? 'Present' : formatDate(edu.endDate)}
                                 </span>
                             </div>
-                            <p style={styles.description}>{edu.description}</p>
+                            {edu.description && <p style={styles.description}>{edu.description}</p>}
                         </div>
                     ))}
-                </div>
-
-                {/* Certificates subsection */}
-                <div style={styles.certificatesSection}>
-                    <p style={styles.subLabel}>Certifications & Achievements</p>
-                    <div style={styles.certificatesGrid}>
-                        {certificatesData.map((cert, index) => (
-                            <div key={index} style={styles.certCard}>
-                                <div style={styles.certIcon}>🏆</div>
-                                <div>
-                                    <p style={styles.certTitle}>{cert.title}</p>
-                                    <p style={styles.certMeta}>
-                                        {cert.issuer} — {cert.date}
-                                        {cert.score && (
-                                            <span style={styles.certScore}> · {cert.score}</span>
-                                        )}
-                                    </p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
                 </div>
             </div>
         </section>
     );
 }
-
 const styles: Record<string, React.CSSProperties> = {
     section: {
         padding: '100px 0',

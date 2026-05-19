@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PortfolioApp.Application.DTOs;
 using PortfolioApp.Application.Interfaces;
@@ -11,10 +12,12 @@ namespace PortfolioApp.Infrastructure.Repositories
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ApplicationDbContext _context;
         public ProfileRepository(ApplicationDbContext context, IMapper mapper, IUnitOfWork unitOfWork, ILogger<GenericRepository<Domain.Entities.Profile>> logger) : base(context, logger)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _context = context;
         }
         public async Task<ProfileDTO> CreateProfile(ProfileDTO profile, CancellationToken cancellationToken)
         {
@@ -33,12 +36,10 @@ namespace PortfolioApp.Infrastructure.Repositories
         public async Task<List<Domain.Entities.Profile>> GetAllProfiles(CancellationToken cancellationToken)
         {
             var returnedProfiles = new List<Domain.Entities.Profile>();
-            await _unitOfWork.ExecuteInTransactionAsync(async () =>
-            {
-                var profiles = await GetAllAsync(cancellationToken);
-                returnedProfiles.AddRange(profiles.ToList());
-            });
-            return returnedProfiles;
+                return await _context.Profiles
+                    .Include(p => p.SocialLinks)
+                    .ToListAsync(cancellationToken);
+
         }
         public async Task<ProfileDTO> GetProfileById(Guid id, CancellationToken cancellationToken)
         {

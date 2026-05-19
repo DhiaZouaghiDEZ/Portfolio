@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
-
-// Placeholder data - will be replaced with API data later
-const heroData = {
-    name: 'Dhia',
-    title: 'Software Engineer',
-    subtitle: 'Full-stack developer',
-    description:
-        'Building scalable applications. 4 years of professional experience turning complex problems into clean solutions.',
-    available: true,
-};
+import { useApi } from '../../hooks/useApi';
+import { portfolioApi } from '../../services/portfolioservice';
+import { Profile } from '../../types';
 
 function Hero() {
     const [visible, setVisible] = useState(false);
+    const { data } = useApi<Profile[]>(portfolioApi.getProfile);
+    const profile = data?.[0] ?? null;
+
+    // Falls back to placeholder while loading
+    const title = profile?.name ?? 'Dhiaeddine Zouaghi';
+    const subtitle = profile ? `${profile.title}` : 'Software Engineer';
+    const description = 'Passionate about building impactful software solutions.';
 
     useEffect(() => {
         const timer = setTimeout(() => setVisible(true), 100);
@@ -26,20 +26,20 @@ function Hero() {
         <section id="home" style={styles.section}>
             <div style={styles.container}>
                 <div style={{ ...styles.content, opacity: visible ? 1 : 0 }}>
-                    {heroData.available && (
+                    {
                         <span style={styles.availabilityTag}>
                             <span style={styles.dot} />
                             Available for opportunities
                         </span>
-                    )}
+                    }
 
                     <h1 style={styles.heading}>
-                        {heroData.title}
+                        {title}
                         <br />
-                        <span style={styles.accentText}>&amp; {heroData.subtitle}</span>
+                        <span style={styles.accentText}>{subtitle}</span>
                     </h1>
 
-                    <p style={styles.description}>{heroData.description}</p>
+                    <p style={styles.description}>{description}</p>
 
                     <div style={styles.buttons}>
                         <button style={styles.btnPrimary} onClick={() => scrollTo('projects')}>

@@ -9,7 +9,6 @@
         public string? Bio { get; set; }
         public string? Email { get; set; }
         public string? Phone { get; set; }
-
-        public string? SocialLinks { get; set; }
+        public List<SocialLinkDTO> SocialLinks { get; set; } = new List<SocialLinkDTO>();
     }
 }

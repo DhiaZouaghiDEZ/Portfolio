@@ -1,59 +1,8 @@
 // Placeholder data pulled from your resume - will be replaced with API data later
-const skillsData = [
-    {
-        category: 'Programming Languages',
-        skills: ['C#', 'TypeScript', 'Python', 'JavaScript'],
-    },
-    {
-        category: 'Frameworks & Technologies',
-        skills: ['.NET Framework', '.NET Core', 'Angular', 'React', 'Node.js', 'WCF'],
-    },
-    {
-        category: 'Cloud & DevOps',
-        skills: [
-            'Azure Cloud',
-            'Azure DevOps',
-            'Docker',
-            'CI/CD',
-            'Azure Functions',
-            'Azure Blob Storage',
-            'Azure Logic Apps',
-        ],
-    },
-    {
-        category: 'Databases',
-        skills: ['MS SQL Server', 'MongoDB', 'Entity Framework'],
-    },
-    {
-        category: 'Testing & Tools',
-        skills: [
-            'xUnit',
-            'Postman',
-            'SoapUI',
-            'Git',
-            'GitHub',
-            'TFS',
-            'Visual Studio',
-            'VS Code',
-            'Redgate',
-            'Application Insights',
-        ],
-    },
-    {
-        category: 'Practices',
-        skills: [
-            'Clean Architecture',
-            'SOLID Principles',
-            'RESTful API Design',
-            'Agile/Scrum',
-            'Unit Testing',
-            'Integration Testing',
-            'Code Review',
-        ],
-    },
-];
+import { useApi } from '../../hooks/useApi';
+import { portfolioApi } from '../../services/portfolioservice';
+import { Skill } from '../../types';
 
-// Primary skills to highlight with accent color
 const primarySkills = [
     'C#',
     'TypeScript',
@@ -65,6 +14,22 @@ const primarySkills = [
 ];
 
 function Skills() {
+    const { data: skills, loading, error } = useApi<Skill[]>(portfolioApi.getSkills);
+
+    // Group skills by category
+    const grouped = skills?.reduce(
+        (acc, skill) => {
+            const category = skill.category ?? 'Other';
+            if (!acc[category]) acc[category] = [];
+            acc[category].push(skill);
+            return acc;
+        },
+        {} as Record<string, Skill[]>
+    );
+
+    if (loading) return <div style={styles.state}>Loading...</div>;
+    if (error || !grouped) return <div style={styles.state}>Failed to load skills.</div>;
+
     return (
         <section id="skills" style={styles.section}>
             <div style={styles.container}>
@@ -72,20 +37,20 @@ function Skills() {
                 <h2 style={styles.sectionTitle}>What I work with</h2>
 
                 <div style={styles.categoriesGrid}>
-                    {skillsData.map((group) => (
-                        <div key={group.category} style={styles.categoryCard}>
-                            <h3 style={styles.categoryTitle}>{group.category}</h3>
+                    {Object.entries(grouped).map(([category, categorySkills]) => (
+                        <div key={category} style={styles.categoryCard}>
+                            <h3 style={styles.categoryTitle}>{category}</h3>
                             <div style={styles.badgesRow}>
-                                {group.skills.map((skill) => (
+                                {categorySkills.map((skill) => (
                                     <span
-                                        key={skill}
+                                        key={skill.id}
                                         style={
-                                            primarySkills.includes(skill)
+                                            primarySkills.includes(skill.name)
                                                 ? styles.badgeAccent
                                                 : styles.badge
                                         }
                                     >
-                                        {skill}
+                                        {skill.name}
                                     </span>
                                 ))}
                             </div>

@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { portfolioApi } from '../../services/portfolioservice';
+import { Message } from '../../types';
 
 // Shape of the form data
 interface ContactForm {
@@ -17,7 +19,12 @@ const emptyForm: ContactForm = {
 };
 
 function Contact() {
-    const [form, setForm] = useState<ContactForm>(emptyForm);
+    const [form, setForm] = useState<Message>({
+        name: '',
+        email: '',
+        subject: '',
+        content: '',
+    });
     const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
     // Handles any input or textarea change and updates the right field
@@ -33,11 +40,13 @@ function Contact() {
 
         setStatus('sending');
 
-        // Placeholder - will be replaced with real API call later
-        setTimeout(() => {
+        try {
+            await portfolioApi.sendMessage(form);
             setStatus('success');
             setForm(emptyForm);
-        }, 1000);
+        } catch {
+            setStatus('error');
+        }
     };
 
     return (
