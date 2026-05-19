@@ -8,6 +8,7 @@ CREATE TABLE [dbo].[Profiles](
 	[Phone] [nvarchar](20) NULL,
 	[CreatedDate] [datetime2](7) NOT NULL,
 	[LastModifiedDate] [datetime2](7) NOT NULL,
+	[HeroSectionDescription] [nvarchar](max) NULL,
  CONSTRAINT [PK_Profiles] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
