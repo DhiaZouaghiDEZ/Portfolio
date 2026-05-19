@@ -26,7 +26,7 @@ function Contact() {
         content: '',
     });
     const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-
+    const [errorMessage, setErrorMessage] = useState('');
     // Handles any input or textarea change and updates the right field
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setForm((prev) => ({
@@ -34,18 +34,24 @@ function Contact() {
             [e.target.name]: e.target.value,
         }));
     };
-
+    const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     const handleSubmit = async () => {
         if (!form.name || !form.email || !form.subject || !form.content) return;
 
-        setStatus('sending');
+        if (!isValidEmail(form.email)) {
+            setStatus('error');
+            setErrorMessage('Please enter a valid email address.');
+            return;
+        }
 
+        setStatus('sending');
         try {
             await portfolioApi.sendMessage(form);
             setStatus('success');
             setForm(emptyForm);
         } catch {
             setStatus('error');
+            setErrorMessage('Something went wrong. Please try again.');
         }
     };
 
@@ -116,9 +122,7 @@ function Contact() {
                     {status === 'success' && (
                         <p style={styles.successMsg}>Message sent! I will get back to you soon.</p>
                     )}
-                    {status === 'error' && (
-                        <p style={styles.errorMsg}>Something went wrong. Please try again.</p>
-                    )}
+                    {status === 'error' && <p style={styles.errorMsg}>{errorMessage}</p>}
 
                     <button
                         style={{
