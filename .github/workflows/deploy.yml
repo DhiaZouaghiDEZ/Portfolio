@@ -35,6 +35,7 @@ jobs:
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+          auth-type: SERVICE_PRINCIPAL
 
       - name: Deploy to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
