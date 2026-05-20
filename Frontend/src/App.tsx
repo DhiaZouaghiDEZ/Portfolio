@@ -7,10 +7,15 @@ import Projects from './components/sections/Projects';
 import Contact from './components/sections/Contact';
 import Footer from './components/layout/Footer';
 import Experience from './components/sections/Experience';
+import LoadingScreen from './components/ui/LoadingScreen';
+import { useLoading } from './context/LoadingContext';
 
 function App() {
+    const { initialLoading } = useLoading();
+
     return (
         <>
+            {initialLoading && <LoadingScreen />}
             <Header />
             <main style={{ paddingTop: '60px' }}>
                 <Hero />
