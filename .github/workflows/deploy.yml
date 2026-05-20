@@ -31,6 +31,14 @@ jobs:
             ghcr.io/dhiazouaghidez/portfolio-api:latest
             ghcr.io/dhiazouaghidez/portfolio-api:${{ github.sha }}
 
+      - name: Debug credentials
+        run: |
+          echo "AZURE_CREDENTIALS length: ${#CREDS}"
+          echo "First 10 chars: ${CREDS:0:10}"
+          echo "Last 10 chars: ${CREDS: -10}"
+        env:
+          CREDS: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Azure login
         uses: azure/login@v2
         with:
