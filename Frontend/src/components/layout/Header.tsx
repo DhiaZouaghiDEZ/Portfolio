@@ -84,7 +84,6 @@ const styles: Record<string, React.CSSProperties> = {
         letterSpacing: '2px',
     },
     nav: {
-        display: 'flex',
         gap: '8px',
         alignItems: 'center',
     },

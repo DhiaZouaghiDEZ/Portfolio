@@ -95,7 +95,7 @@ function Footer() {
 
             <div style={styles.bottom}>
                 <span>
-                    Â© {new Date().getFullYear()} {profile?.name ?? 'Dhiaeddine Zouaghi'}. All rights
+                    © {new Date().getFullYear()} {profile?.name ?? 'Dhiaeddine Zouaghi'}. All rights
                     reserved.
                 </span>
             </div>
@@ -169,4 +169,3 @@ const styles: Record<string, React.CSSProperties> = {
 };
 
 export default Footer;
-
