@@ -26,15 +26,16 @@ properties:
         secretRef: sendgrid-email
       - name: SendGrid__FromName
         secretRef: sendgrid-fromname
+      - name: SendGrid__ToEmail
+        secretRef: sendgrid-toemail
+      - name: AllowedOrigins
+        secretRef: allowed-origins
       - name: PermitLimit
         value: "5"
       - name: CoolDownWindow
         value: "15"
       - name: ASPNETCORE_ENVIRONMENT
         value: Production
-      resources:
-        cpu: 0.5
-        memory: 1Gi
     scale:
       minReplicas: 0
       maxReplicas: 1
