@@ -1,0 +1,40 @@
+properties:
+  template:
+    containers:
+    - name: portfolio-api
+      image: ghcr.io/dhiazouaghidez/portfolio-api:latest
+      env:
+      - name: ConnectionStrings__DefaultConnection
+        secretRef: db-connection
+      - name: ConnectionStrings__LogConnection
+        secretRef: log-connection
+      - name: Jwt__SecretKey
+        secretRef: jwt-secret
+      - name: Jwt__Issuer
+        value: PortfolioApp
+      - name: Jwt__Audience
+        value: PortfolioApp
+      - name: Jwt__ExpiryInMinutes
+        value: "60"
+      - name: Admin__Username
+        secretRef: admin-username
+      - name: Admin__Password
+        secretRef: admin-password
+      - name: SendGrid__ApiKey
+        secretRef: sendgrid-key
+      - name: SendGrid__FromEmail
+        secretRef: sendgrid-email
+      - name: SendGrid__FromName
+        secretRef: sendgrid-fromname
+      - name: PermitLimit
+        value: "5"
+      - name: CoolDownWindow
+        value: "15"
+      - name: ASPNETCORE_ENVIRONMENT
+        value: Production
+      resources:
+        cpu: 0.5
+        memory: 1Gi
+    scale:
+      minReplicas: 0
+      maxReplicas: 1
