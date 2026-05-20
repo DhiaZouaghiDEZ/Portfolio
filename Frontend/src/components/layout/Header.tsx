@@ -18,14 +18,26 @@ function Header() {
     };
 
     return (
-        <header style={styles.header}>
-            <div style={styles.container}>
+        <header className="site-header" style={styles.header}>
+            <div className="site-header__container" style={styles.container}>
                 <span style={styles.logo}>Dhiaeddine Zouaghi</span>
 
-                <nav style={styles.nav}>
+                <button
+                    className="mobile-menu-toggle"
+                    aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+                    onClick={() => setMenuOpen((prev) => !prev)}
+                    type="button"
+                >
+                    <span />
+                    <span />
+                    <span />
+                </button>
+
+                <nav className={`site-nav ${menuOpen ? 'open' : ''}`} style={styles.nav}>
                     {navLinks.map((link) => (
                         <button
                             key={link.label}
+                            className="nav-link"
                             style={styles.navLink}
                             onClick={() => handleNavClick(link.href)}
                         >
@@ -33,6 +45,7 @@ function Header() {
                         </button>
                     ))}
                     <a
+                        className="resume-btn"
                         href="/Dhiaeddine_Zouaghi_Resume.pdf"
                         download="Dhiaeddine_Zouaghi_Resume.pdf"
                         style={styles.resumeBtn}

@@ -1,4 +1,4 @@
-import { useApi } from '../../hooks/useApi';
+﻿import { useApi } from '../../hooks/useApi';
 import { portfolioApi } from '../../services/portfolioservice';
 import { Educations } from '../../types';
 
@@ -14,7 +14,7 @@ function Education() {
     if (error || !educations) return <div style={styles.state}>Failed to load education.</div>;
 
     return (
-        <section id="education" style={styles.section}>
+        <section id="education" className="education" style={styles.section}>
             <div style={styles.container}>
                 <p style={styles.sectionLabel}>Education</p>
                 <h2 style={styles.sectionTitle}>Academic background</h2>
@@ -22,7 +22,7 @@ function Education() {
                 <div style={styles.cardsWrapper}>
                     {educations.map((edu) => (
                         <div key={edu.id} style={styles.card}>
-                            <div style={styles.cardHeader}>
+                            <div className="card-header" style={styles.cardHeader}>
                                 <div>
                                     <h3 style={styles.degree}>{edu.degree}</h3>
                                     <p style={styles.institution}>{edu.institution}</p>

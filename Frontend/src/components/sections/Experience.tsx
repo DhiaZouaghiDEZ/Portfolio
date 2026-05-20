@@ -1,4 +1,4 @@
-import { useApi } from '../../hooks/useApi';
+﻿import { useApi } from '../../hooks/useApi';
 import { portfolioApi } from '../../services/portfolioservice';
 import { Experiences } from '../../types';
 
@@ -22,14 +22,18 @@ function Experience() {
 
                 <div style={styles.timeline}>
                     {experiences.map((exp, index) => (
-                        <div key={exp.id} style={styles.timelineItem}>
+                        <div
+                            key={exp.id}
+                            className="responsive-timeline-item"
+                            style={styles.timelineItem}
+                        >
                             <div style={styles.timelineLeft}>
                                 <div style={styles.dot} />
                                 {index < experiences.length - 1 && <div style={styles.line} />}
                             </div>
 
                             <div style={styles.timelineContent}>
-                                <div style={styles.cardHeader}>
+                                <div className="card-header" style={styles.cardHeader}>
                                     <div>
                                         <h3 style={styles.role}>{exp.role}</h3>
                                         <p style={styles.company}>{exp.company}</p>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { portfolioApi } from '../../services/portfolioservice';
 import { Message } from '../../types';
 
@@ -56,7 +56,7 @@ function Contact() {
     };
 
     return (
-        <section id="contact" style={styles.section}>
+        <section id="contact" className="contact" style={styles.section}>
             <div style={styles.container}>
                 <p style={styles.sectionLabel}>Contact</p>
                 <h2 style={styles.sectionTitle}>Get in touch</h2>
@@ -67,7 +67,7 @@ function Contact() {
 
                 <div style={styles.card}>
                     {/* Row 1 - Name and Email side by side */}
-                    <div style={styles.row}>
+                    <div className="responsive-grid" style={styles.row}>
                         <div style={styles.fieldWrapper}>
                             <label style={styles.label}>Name</label>
                             <input
@@ -247,3 +247,4 @@ const styles: Record<string, React.CSSProperties> = {
 };
 
 export default Contact;
+

@@ -1,4 +1,4 @@
-import { useApi } from '../../hooks/useApi';
+﻿import { useApi } from '../../hooks/useApi';
 import { portfolioApi } from '../../services/portfolioservice';
 import { Profile, SocialLink } from '../../types';
 
@@ -56,7 +56,7 @@ function Footer() {
 
     return (
         <footer style={styles.footer}>
-            <div style={styles.container}>
+            <div className="footer-container" style={styles.container}>
                 {/* Left - name and title from API */}
                 <div style={styles.left}>
                     <span style={styles.name}>{profile?.name ?? 'Dhiaeddine Zouaghi'}</span>
@@ -64,7 +64,7 @@ function Footer() {
                 </div>
 
                 {/* Center - nav links */}
-                <nav style={styles.nav}>
+                <nav className="footer-nav" style={styles.nav}>
                     {navLinks.map((link) => (
                         <button
                             key={link.label}
@@ -77,7 +77,7 @@ function Footer() {
                 </nav>
 
                 {/* Right - dynamic social links from API */}
-                <div style={styles.socials}>
+                <div className="footer-socials" style={styles.socials}>
                     {profile?.socialLinks?.map((link: SocialLink) => (
                         <a
                             key={link.id}
@@ -95,7 +95,7 @@ function Footer() {
 
             <div style={styles.bottom}>
                 <span>
-                    © {new Date().getFullYear()} {profile?.name ?? 'Dhiaeddine Zouaghi'}. All rights
+                    Â© {new Date().getFullYear()} {profile?.name ?? 'Dhiaeddine Zouaghi'}. All rights
                     reserved.
                 </span>
             </div>
@@ -169,3 +169,4 @@ const styles: Record<string, React.CSSProperties> = {
 };
 
 export default Footer;
+

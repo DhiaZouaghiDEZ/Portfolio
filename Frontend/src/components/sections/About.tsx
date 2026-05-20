@@ -13,12 +13,12 @@ function About() {
     if (error || !profile) return <div style={styles.state}>Failed to load profile.</div>;
 
     return (
-        <section id="about" style={styles.section}>
+        <section id="about" className="about" style={styles.section}>
             <div style={styles.container}>
                 <p style={styles.sectionLabel}>About</p>
                 <h2 style={styles.sectionTitle}>Who I am</h2>
 
-                <div style={styles.grid}>
+                <div className="responsive-grid" style={styles.grid}>
                     <div style={styles.left}>
                         <p style={styles.summary}>{profile.bio}</p>
                     </div>

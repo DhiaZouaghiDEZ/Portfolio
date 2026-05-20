@@ -1,4 +1,4 @@
-// Placeholder data pulled from your resume - will be replaced with API data later
+﻿// Placeholder data pulled from your resume - will be replaced with API data later
 import { useApi } from '../../hooks/useApi';
 import { portfolioApi } from '../../services/portfolioservice';
 import { Skill } from '../../types';
@@ -31,12 +31,12 @@ function Skills() {
     if (error || !grouped) return <div style={styles.state}>Failed to load skills.</div>;
 
     return (
-        <section id="skills" style={styles.section}>
+        <section id="skills" className="skills" style={styles.section}>
             <div style={styles.container}>
                 <p style={styles.sectionLabel}>Skills</p>
                 <h2 style={styles.sectionTitle}>What I work with</h2>
 
-                <div style={styles.categoriesGrid}>
+                <div className="responsive-grid" style={styles.categoriesGrid}>
                     {Object.entries(grouped).map(([category, categorySkills]) => (
                         <div key={category} style={styles.categoryCard}>
                             <h3 style={styles.categoryTitle}>{category}</h3>
@@ -128,3 +128,4 @@ const styles: Record<string, React.CSSProperties> = {
 };
 
 export default Skills;
+

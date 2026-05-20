@@ -96,6 +96,13 @@ button {
     color: var(--accent);
 }
 
+.mobile-menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
 .loading-screen {
     position: fixed;
     inset: 0;
@@ -162,5 +169,132 @@ button {
     50% {
         opacity: 1;
         transform: scale(1.3);
+    }
+}
+
+/* Responsive mobile layout */
+@media (max-width: 900px) {
+    .container {
+        padding: 0 18px;
+    }
+
+    .section {
+        padding: 60px 0;
+    }
+
+    .section-title {
+        font-size: 24px;
+        margin-bottom: 32px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: inline-flex;
+    }
+
+    .site-header {
+        position: fixed;
+        width: 100%;
+    }
+
+    .site-header__container {
+        flex-wrap: wrap;
+        padding: 14px 18px;
+    }
+
+    .mobile-menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        padding: 10px;
+        margin-left: auto;
+    }
+
+    .mobile-menu-toggle span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: #94a3b8;
+        margin: 4px 0;
+        border-radius: 9999px;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .site-nav {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        margin-top: 16px;
+        display: none;
+    }
+
+    .site-nav.open {
+        display: flex;
+    }
+
+    .site-nav .nav-link,
+    .site-nav .resume-btn {
+        width: 100%;
+    }
+
+    .site-nav .nav-link {
+        justify-content: flex-start;
+    }
+
+    .site-nav .resume-btn {
+        text-align: center;
+    }
+
+    .footer-container,
+    .site-header__container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .footer-container {
+        gap: 18px;
+    }
+
+    .footer-nav,
+    .footer-socials {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .responsive-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .card-header,
+    .responsive-timeline-item {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .responsive-timeline-item {
+        gap: 16px;
+    }
+
+    .timeline-content {
+        padding: 20px;
+    }
+
+    .contact .card,
+    .about .card,
+    .skills .categoryCard,
+    .education .card {
+        padding: 20px;
     }
 }
