@@ -33,7 +33,7 @@ function Header() {
                         </button>
                     ))}
                     <a
-                        href="/assets/resume/Dhiaeddine_Zouaghi_Resume.pdf"
+                        href="/Dhiaeddine_Zouaghi_Resume.pdf"
                         download="Dhiaeddine_Zouaghi_Resume.pdf"
                         style={styles.resumeBtn}
                     >
