@@ -170,7 +170,6 @@ builder.Host.UseSerilog((context, services, configuration) =>
 
 var app = builder.Build();
 
-app.UseRateLimiter();
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
@@ -183,7 +182,7 @@ app.UseSwaggerUI(c =>
 app.UseSerilogRequestLogging();
 
 app.UseCors("AllowFrontend");
-
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 
