@@ -51,11 +51,16 @@ jobs:
             ConnectionStrings__DefaultConnection=secretref:db-connection
             ConnectionStrings__LogConnection=secretref:log-connection
             Jwt__SecretKey=secretref:jwt-secret
+            Jwt__Issuer=PortfolioApp
+            Jwt__Audience=PortfolioApp
+            Jwt__ExpiryInMinutes=60
             Admin__Username=secretref:admin-username
             Admin__Password=secretref:admin-password
             SendGrid__ApiKey=secretref:sendgrid-key
-            SendGrid__Email=secretref:sendgrid-email
+            SendGrid__FromEmail=secretref:sendgrid-email
             SendGrid__FromName=secretref:sendgrid-fromname
+            PermitLimit=5
+            CoolDownWindow=15
             ASPNETCORE_ENVIRONMENT=Production
 
   deploy-frontend:

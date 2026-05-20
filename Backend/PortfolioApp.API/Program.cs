@@ -165,21 +165,16 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Portfolio API v1");
-        c.RoutePrefix = string.Empty; // makes Swagger the default page at root URL
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Portfolio API v1");
+    c.RoutePrefix = string.Empty; // makes Swagger the default page at root URL
+});
+
 app.UseSerilogRequestLogging();
-app.UseHttpsRedirection();
 
-app.UseCors("AllowAll");
-
-app.UseAuthorization();
+app.UseCors("AllowFrontend");
 
 app.MapControllers();
 
