@@ -121,12 +121,23 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins(
-            "http://localhost:5173",
-            "https://portfolio-api.greenmoss-f997f250.germanywestcentral.azurecontainerapps.io.azurestaticapps.net"
-        )
-        .AllowAnyMethod()
-        .AllowAnyHeader();
+        var allowedOrigins = builder.Configuration["AllowedOrigins"]
+            ?.Split(';', StringSplitOptions.RemoveEmptyEntries)
+            .Select(o => o.Trim())
+            .ToArray();
+
+        if (allowedOrigins != null && allowedOrigins.Length > 0)
+        {
+            policy.WithOrigins(allowedOrigins)
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        }
+        else
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        }
     });
 });
 //Adding Serilog
