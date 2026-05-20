@@ -18,7 +18,7 @@ function Header() {
     };
 
     return (
-        <header className="site-header" style={styles.header}>
+        <header className={`site-header ${menuOpen ? 'menu-open' : ''}`} style={styles.header}>
             <div className="site-header__container" style={styles.container}>
                 <span style={styles.logo}>Dhiaeddine Zouaghi</span>
 

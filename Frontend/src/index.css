@@ -236,7 +236,10 @@ button {
         align-items: stretch;
         gap: 12px;
         margin-top: 16px;
+        padding: 16px 18px 18px;
         display: none;
+        background: rgba(15, 15, 19, 0.96);
+        border-bottom: 0.5px solid #1e1e2e;
     }
 
     .site-nav.open {
@@ -275,6 +278,10 @@ button {
 
     .responsive-grid {
         grid-template-columns: 1fr !important;
+    }
+
+    .site-header.menu-open + main {
+        padding-top: 260px;
     }
 
     .card-header,
