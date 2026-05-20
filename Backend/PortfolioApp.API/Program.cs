@@ -119,11 +119,14 @@ builder.Services.AddRateLimiter(options =>
 // Add CORS if needed
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        policy.WithOrigins(
+            "http://localhost:5173",
+            "https://portfolio-api.greenmoss-f997f250.germanywestcentral.azurecontainerapps.io.azurestaticapps.net"
+        )
+        .AllowAnyMethod()
+        .AllowAnyHeader();
     });
 });
 //Adding Serilog
