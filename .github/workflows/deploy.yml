@@ -1,0 +1,81 @@
+name: Deploy Portfolio
+
+on:
+  push:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository_owner }}/portfolio-api
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Backend
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/portfolio-api:latest
+            ghcr.io/${{ github.repository_owner }}/portfolio-api:${{ github.sha }}
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Container Apps
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          resourceGroup: portfolio-rg
+          containerAppName: portfolio-api
+          imageToDeploy: ghcr.io/${{ github.repository_owner }}/portfolio-api:${{ github.sha }}
+          environmentVariables: |
+            ConnectionStrings__DefaultConnection=secretref:db-connection
+            ConnectionStrings__LogConnection=secretref:log-connection
+            Jwt__SecretKey=secretref:jwt-secret
+            Admin__Username=secretref:admin-username
+            Admin__Password=secretref:admin-password
+            SendGrid__ApiKey=secretref:sendgrid-key
+            SendGrid__Email=secretref:sendgrid-email
+            SendGrid__FromName=secretref:sendgrid-fromname
+            ASPNETCORE_ENVIRONMENT=Production
+
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install and build
+        working-directory: ./Frontend
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: upload
+          app_location: Frontend
+          output_location: dist
+          skip_app_build: true
