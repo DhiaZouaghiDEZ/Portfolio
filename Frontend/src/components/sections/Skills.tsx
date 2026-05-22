@@ -42,14 +42,7 @@ function Skills() {
                             <h3 style={styles.categoryTitle}>{category}</h3>
                             <div style={styles.badgesRow}>
                                 {categorySkills.map((skill) => (
-                                    <span
-                                        key={skill.id}
-                                        style={
-                                            primarySkills.includes(skill.name)
-                                                ? styles.badgeAccent
-                                                : styles.badge
-                                        }
-                                    >
+                                    <span key={skill.id} style={styles.badge}>
                                         {skill.name}
                                     </span>
                                 ))}
@@ -128,4 +121,3 @@ const styles: Record<string, React.CSSProperties> = {
 };
 
 export default Skills;
-
