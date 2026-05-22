@@ -193,11 +193,11 @@ const styles: Record<string, React.CSSProperties> = {
         borderTop: '0.5px solid #2a2a3a',
     },
     techBadge: {
-        fontSize: '11px',
-        color: '#6366f1',
-        background: 'rgba(99, 102, 241, 0.1)',
-        border: '0.5px solid rgba(99, 102, 241, 0.4)',
-        padding: '3px 10px',
+        fontSize: '12px',
+        color: '#94a3b8',
+        background: '#0f0f13',
+        border: '0.5px solid #2a2a3a',
+        padding: '4px 12px',
         borderRadius: '20px',
     },
 };
