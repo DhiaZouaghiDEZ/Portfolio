@@ -20,7 +20,7 @@ const LoadingContext = createContext<LoadingContextValue | null>(null);
 export function LoadingProvider({ children }: { children: ReactNode }) {
     const [loadingCount, setLoadingCount] = useState(0);
     const [initialLoading, setInitialLoading] = useState(true);
-    const MIN_LOADING_TIME = 2000;
+    const MIN_LOADING_TIME = 500;
 
     useEffect(() => {
         if (initialLoading && loadingCount === 0) {
