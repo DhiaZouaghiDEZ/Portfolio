@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
 	<TargetFramework>net10.0</TargetFramework>
@@ -13,8 +13,10 @@
 	  <PrivateAssets>all</PrivateAssets>
 	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	</PackageReference>
+	<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.9" />
 	<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 	<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
+	<PackageReference Include="Pgvector.EntityFrameworkCore" Version="0.3.0" />
 	<PackageReference Include="SendGrid" Version="9.29.3" />
 	<PackageReference Include="Serilog.Sinks.Postgresql.Alternative" Version="4.2.0" />
 	<PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.15" />

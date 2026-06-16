@@ -60,7 +60,10 @@ builder.Services.AddSwaggerGen(c =>
 
 // Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        npgsqlOptions => npgsqlOptions.UseVector()
+    ));
 
 // Add Infrastructure Services
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -78,6 +81,17 @@ builder.Services.AddAutoMapper(typeof(MessageMapperProfile).Assembly);
 builder.Services.AddAutoMapper(typeof(ProjectMapperProfile).Assembly);
 builder.Services.AddAutoMapper(typeof(SkillMapperProfile).Assembly);
 builder.Services.AddScoped<IEmailService, EmailService>();
+
+// Add AI agent services
+builder.Services.AddHttpClient("Ollama", (serviceProvider, client) =>
+{
+    var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+    client.BaseAddress = new Uri(configuration["Ollama:BaseUrl"] ?? "http://localhost:11434");
+});
+
+
+builder.Services.AddScoped<IEmbeddingService, EmbeddingService>();
+builder.Services.AddScoped<IAgentService, AgentService>();
 
 // Add JWT Auth
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

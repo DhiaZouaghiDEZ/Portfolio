@@ -66,3 +66,9 @@ export interface Message {
     submittedDate?: string;
     isRead?: boolean;
 }
+
+export interface AgentResponse {
+    answer: string;
+    success: boolean;
+    error?: string;
+}

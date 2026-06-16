@@ -1,5 +1,5 @@
 import { config } from '../config/env';
-import { Profile, Project, Skill, Experiences, Educations, Message } from '../types';
+import { Profile, Project, Skill, Experiences, Educations, Message, AgentResponse } from '../types';
 
 const BASE_URL = config.apiBaseUrl;
 
@@ -30,4 +30,5 @@ export const portfolioApi = {
     getExperience: () => apiFetch<Experiences[]>('/api/experience/getallexperiences'),
     getEducation: () => apiFetch<Educations[]>('/api/education/getalleducations'),
     sendMessage: (data: Message) => apiPost<Message>('/api/message/addmessage', data),
+    askAgent: (question: string) => apiPost<AgentResponse>('/api/agent/ask', { question }),
 };

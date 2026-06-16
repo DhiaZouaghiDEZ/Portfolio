@@ -16,6 +16,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Education> Educations { get; set; } = null!;
     public DbSet<Message> Messages { get; set; } = null!;
     public DbSet<SocialLink> SocialLinks { get; set; }
+    public DbSet<KnowledgeChunk> KnowledgeChunks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -171,6 +172,14 @@ public class ApplicationDbContext : DbContext
                   .WithMany(p => p.SocialLinks)
                   .HasForeignKey(e => e.ProfileId)
                   .OnDelete(DeleteBehavior.Cascade);
+        });
+        modelBuilder.HasPostgresExtension("vector");
+
+        modelBuilder.Entity<KnowledgeChunk>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Content).IsRequired();
+            entity.Property(e => e.Category).HasMaxLength(100).IsRequired();
         });
     }
 }
